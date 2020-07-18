@@ -1,6 +1,9 @@
+import 'package:TodoApp/UI/Intray/intray_page.dart';
 import 'package:flutter/material.dart';
 
 import './models/global.dart';
+import './UI/Intray/intray_page.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -11,12 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      // title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'Todo App'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -34,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       color: Colors.yellow,
       home: SafeArea(
         child: DefaultTabController(
@@ -42,9 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
             body: Stack(children: <Widget>[
               TabBarView(
                 children: [
-                  new Container(
-                    color: darkGrey,
-                  ),
+                  IntrayPage(),
                   new Container(
                     color: Colors.orange,
                   ),
@@ -55,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 padding: EdgeInsets.only(left:50),
-                height: 150,
+                height: 170,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(50),
@@ -66,18 +69,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Intray',style: intrayTitle,),
+                    Text('Intray',style: intrayTitle, textAlign: TextAlign.center,),
                     Container() 
                   ]
                 ),
               ),
               Container(
-                height: 80,
-                width: 80,
-                margin: EdgeInsets.only(top: 115, left: MediaQuery.of(context).size.width*0.5 - 40),
+                height: 60,
+                width: 60,
+                margin: EdgeInsets.only(top: 140, left: MediaQuery.of(context).size.width*0.5 - 30),
                 child: FloatingActionButton(
-                  child: Icon(Icons.add , size: 70,),
-                  backgroundColor: redPink,
+                  child: Icon(Icons.add , size: 50,),
+                  backgroundColor: Colors.lightBlueAccent[100],
                   onPressed: () {},
                 ),
               )
@@ -97,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
                 labelColor: darkGrey,
-                unselectedLabelColor: Colors.blueAccent,
+                unselectedLabelColor: Colors.lightBlueAccent,
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorPadding: EdgeInsets.all(5.0),
                 indicatorColor: Colors.transparent,
