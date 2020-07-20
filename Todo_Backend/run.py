@@ -3,10 +3,13 @@ from flask import Flask
 def create_app(config_filename):
     app = Flask(__name__)
     app.config.from_object(config_filename)
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     from app import api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    from Model import db
+    db.init_app(app)
 
     # from app import api_bp
     # db.init_app(app)
