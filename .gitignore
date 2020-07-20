@@ -1,4 +1,5 @@
 .vscode/
 Todo_Backend/my-env/
 Todo_Backend/config.py
-*pyc
+Todo_Backend/__pycache__/
+*.pyc
