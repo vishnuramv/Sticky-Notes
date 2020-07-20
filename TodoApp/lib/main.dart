@@ -1,9 +1,9 @@
 import 'package:TodoApp/UI/Intray/intray_page.dart';
+import 'package:TodoApp/UI/Login/loginscreen.dart';
 import 'package:flutter/material.dart';
 
 import './models/global.dart';
 import './UI/Intray/intray_page.dart';
-
 
 void main() {
   runApp(MyApp());
@@ -19,7 +19,22 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Todo App'),
+      home: FutureBuilder(
+        future: _calculation,
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return Text('Press button');
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return Text('Awaiting');
+            case ConnectionState.done:
+              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+              return Text('Result: ${snapshot.data}');
+          }
+          return null;
+        },
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -57,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(left:50),
+                padding: EdgeInsets.only(left: 50),
                 height: 170,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -67,19 +82,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Intray',style: intrayTitle, textAlign: TextAlign.center,),
-                    Container() 
-                  ]
-                ),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Intray',
+                        style: intrayTitle,
+                        textAlign: TextAlign.center,
+                      ),
+                      Container()
+                    ]),
               ),
               Container(
                 height: 60,
                 width: 60,
-                margin: EdgeInsets.only(top: 140, left: MediaQuery.of(context).size.width*0.5 - 30),
+                margin: EdgeInsets.only(
+                    top: 140,
+                    left: MediaQuery.of(context).size.width * 0.5 - 30),
                 child: FloatingActionButton(
-                  child: Icon(Icons.add , size: 50,),
+                  child: Icon(
+                    Icons.add,
+                    size: 50,
+                  ),
                   backgroundColor: Colors.lightBlueAccent[100],
                   onPressed: () {},
                 ),

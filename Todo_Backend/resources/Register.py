@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask import request
 from Model import db, User
+import random
+import string
 # import json
 
 class Register(Resource):
@@ -34,7 +36,14 @@ class Register(Resource):
         if user:
             return {'message': 'Email address already exists'}, 400
         
+        api_key = self.generate_key()
+        user = User.query.filter_by(api_key=api_key).first()
+        
+        if user:
+            return {'message': 'Api key already exists'}, 400
+
         user= User(
+            api_key = api_key,
             firstname = json_data["firstname"],
             lastname = json_data["lastname"],
             emailadress = json_data["emailadress"],
@@ -48,6 +57,8 @@ class Register(Resource):
 
         return { "status":"success", "data":result}
 
+    def generate_key(self):
+        return ''.join(random.choice(string.ascii_letters+string.digits) for _ in range(50))
         # username = data['username']
         # password = data['password']
         # emailadress = data['emailadress']

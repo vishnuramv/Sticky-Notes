@@ -12,18 +12,20 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer(), primary_key=True)
-    username = db.Column(db.String(100), unique=True)
-    firstname = db.Column(db.String(100))
-    lastname = db.Column(db.String(100))
-    password = db.Column(db.String(100))
-    emailadress = db.Column(db.String(100), unique=True)
+    username = db.Column(db.String(), unique=True)
+    firstname = db.Column(db.String())
+    lastname = db.Column(db.String())
+    password = db.Column(db.String())
+    emailadress = db.Column(db.String(), unique=True)
+    api_key = db.Column(db.String())
 
-    def __init__(self, firstname, lastname, emailadress, password, username):
-	    self.firstname = firstname
-	    self.lastname = lastname
-	    self.emailadress = emailadress
-	    self.password = password
-	    self.username = username
+    def __init__(self, api_key, firstname, lastname, emailadress, password, username):
+        self.api_key = api_key
+        self.firstname = firstname
+        self.lastname = lastname
+        self.emailadress = emailadress
+        self.password = password
+        self.username = username
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
@@ -36,6 +38,7 @@ class User(db.Model):
             'lastname' : self.lastname,
             'password' : self.password,
             'emailadress' : self.emailadress,
+            'api_key' : self.api_key
         }
 
 class Task(db.Model):
