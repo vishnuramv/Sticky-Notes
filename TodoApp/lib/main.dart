@@ -1,9 +1,12 @@
 import 'package:TodoApp/UI/Intray/intray_page.dart';
 import 'package:TodoApp/UI/Login/loginscreen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import './models/global.dart';
 import './UI/Intray/intray_page.dart';
+import './models/classes/user.dart';
+import './bloc/blocs/user_bloc_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,24 +22,70 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FutureBuilder(
-        future: _calculation,
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text('Press button');
-            case ConnectionState.active:
-            case ConnectionState.waiting:
-              return Text('Awaiting');
-            case ConnectionState.done:
-              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-              return Text('Result: ${snapshot.data}');
-          }
-          return null;
-        },
-      ),
+      home: MyHomePage(),
+      // home: FutureBuilder(
+      //   future: getUser(),
+      //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+      //     // switch (snapshot.connectionState) {
+      //     //   case ConnectionState.none:
+      //     //     return Text('Press button');
+      //     //   case ConnectionState.active:
+      //     //   case ConnectionState.waiting:
+      //     //     return Text('Awaiting');
+      //     //   case ConnectionState.done:
+      //     //     if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+      //     //     return Text('Result: ${snapshot.data}');
+      //     // }
+
+      //     // return null;
+
+      //     if (snapshot.connectionState == ConnectionState.none &&
+      //         snapshot.hasData == null) {
+      //       return Container();
+      //     }
+      //     return ListView.builder(
+      //         itemCount: snapshot.data.length,
+      //         itemBuilder: (context, index) {
+      //           return Column(
+      //             children: <Widget>[],
+      //           );
+      //         });
+      //   },
+      // ),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  Future getUser() async {
+    var result = await http.get('http://127.0.0.1:5000/api/register');
+    // if (result.statusCode == 200) {
+    print(result.body);
+    return result;
+    // } else {
+    // print('error');
+    // }
+
+    // String apiKey= await getApiKey();
+    // if (apiKey.length <=0){
+
+    // }
+  }
+
+  asyncFunc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<String> getApiKey() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String apiKey;
+    try {
+      apiKey = prefs.getString('API_Token');
+    } catch (Exception) {
+      apiKey = "";
+    }
+    return apiKey;
+    // print('Pressed $apiKey times.');
+    // await prefs.setString('API_Token', apiKey);
   }
 }
 
@@ -52,6 +101,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    bloc.registerUser('test1', 'test', '1', 'test1@.com', '123test');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Colors.yellow,
