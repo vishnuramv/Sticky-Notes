@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
+      home: LoginPage(),
       // home: FutureBuilder(
       //   future: getUser(),
       //   builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -101,7 +101,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    bloc.registerUser('test1', 'test', '1', 'test1@.com', '123test');
+    // bloc.registerUser('test3', 'test', '3', 'test3@.com', '1234test');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       color: Colors.yellow,

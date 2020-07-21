@@ -12,8 +12,8 @@ class ApiProvider {
       String emailadress, String password) async {
     print("\n\n\n\nhello\n\n\n\n");
     final response = await client.post(
-        'http://127.0.0.1:5000/api/register',
-        // 'http://10.0.2.2:5000/api/register', //for android emulator use 10.0.2.2:
+        // 'http://127.0.0.1:5000/api/register',
+        'http://10.0.2.2:5000/api/register', //for android emulator use 10.0.2.2:
         // headers: "",
         body: jsonEncode({
           'username': username,
@@ -22,9 +22,10 @@ class ApiProvider {
           'emailadress': emailadress,
           'password': password
         }));
-    print(response.body.toString());
-    if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
+    final Map result = json.decode(response.body);
+    print(result['data'].toString());
+    if (response.statusCode == 201) {
+      return User.fromJson(result['data']);
     } else {
       throw Exception('failed to load');
     }
