@@ -1,15 +1,13 @@
+import 'package:TodoApp/bloc/blocs/user_bloc_provider.dart';
 import 'package:TodoApp/models/classes/task.dart';
 import 'package:TodoApp/models/global.dart';
 import 'package:TodoApp/models/widgets/intary_todo_widget.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/material/reorderable_list.dart';
-// import 'package:flutter/material.dart';
-// import 'package:todoapp/bloc/blocs/user_bloc_provider.dart';
-// import 'package:todoapp/models/classes/task.dart';
-// import 'package:todoapp/models/global.dart';
-// import 'package:todoapp/models/widgets/intray_todo_widget.dart';
 
 class IntrayPage extends StatefulWidget {
+  final String apiKey;
+  IntrayPage({this.apiKey});
+
   @override
   _IntrayPageState createState() => _IntrayPageState();
 }
@@ -17,67 +15,85 @@ class IntrayPage extends StatefulWidget {
 class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
 
+  TaskBloc tasksBloc;
+
+  @override
+  void initState() {
+    tasksBloc = TaskBloc(widget.apiKey);
+  }
+
+  @override
+  void dispose() {
+    // taskBloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    taskList = getList();
     return Container(
-      color: darkGrey,
-      child: _buildReorderableListSimple(context),
-      // child: ReorderableListView(
-      //   padding: EdgeInsets.only(top: 300),
-      //   children: todoItems ,
-      //   onReorder: _onReorder,
-      // ),
-    );
+        color: darkGrey,
+        child: StreamBuilder(
+          stream: tasksBloc.getTask,
+          initialData: [],
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot != null) {
+              if (snapshot.data.length > 0) {
+                // taskList = snapshot.data;
+                return _buildReorderableListSimple(context, snapshot.data);
+              } else if (snapshot.data.length == 0) {
+                return Center(
+                  child: Text(
+                    "No Task",
+                    style: TextStyle(
+                        fontFamily: 'Avenir',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 30),
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Container();
+              }
+              return CircularProgressIndicator();
+            }
+          },
+        ));
   }
 
   Widget _buildListTile(BuildContext context, Task item) {
     return ListTile(
-      key: Key(item.taskid),
+      key: Key(item.taskId.toString()),
       title: IntrayTodo(
         title: item.title,
+        // note: item.note
       ),
     );
   }
 
-  Widget _buildReorderableListSimple(BuildContext context) {
+  Widget _buildReorderableListSimple(
+      BuildContext context, List<Task> taskList) {
     return Theme(
-      data: ThemeData(
-        canvasColor: Colors.transparent
-      ),
+      data: ThemeData(canvasColor: Colors.transparent),
       child: ReorderableListView(
         padding: EdgeInsets.only(top: 300.0),
         children:
-          taskList.map((Task item) => _buildListTile(context, item)).toList(),
-          onReorder: (oldIndex, newIndex) {
-            setState(() {
-              Task item = taskList[oldIndex];
-              taskList.remove(item);
-              taskList.insert(newIndex, item);
-            });
-          },
+            taskList.map((Task item) => _buildListTile(context, item)).toList(),
+        onReorder: (oldIndex, newIndex) {
+          setState(() {
+            Task item = taskList[oldIndex];
+            taskList.remove(item);
+            taskList.insert(newIndex, item);
+          });
+        },
       ),
     );
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
 
-      final Task item = taskList.removeAt(oldIndex);
-      taskList.insert(newIndex, item);
-    });
-  }
 
-  List<Task> getList() {
-    for (int i = 0; i < 10; i++) {
-      taskList.add(new Task(
-        title: 'My first ' + i.toString(),
-        completed: false,
-        taskid: i.toString()));
-    }
-    return taskList;
-  }
+
+  // Future<List<Task>> getList() async {
+  //   List<Task> tasks = await taskBloc.getUserTask(widget.apiKey);
+  //   return tasks;
+  // }
 }

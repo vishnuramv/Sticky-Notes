@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class IntrayTodo extends StatelessWidget {
   final String title;
   final String keyValue;
-  IntrayTodo({this.title, this.keyValue});
+  final String note;
+  IntrayTodo({this.title,this.note, this.keyValue});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +14,7 @@ class IntrayTodo extends StatelessWidget {
       // margin: EdgeInsets.only(bottom: 5),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: redPink,
+          color: blue,
           borderRadius: BorderRadius.all(Radius.circular(10)),
           boxShadow: [
             new BoxShadow(
@@ -23,13 +24,18 @@ class IntrayTodo extends StatelessWidget {
           ]),
       child: Row(
         children: <Widget>[
-          Radio(),
+          Radio(onChanged: null,groupValue: null,value: null,),
           Column(
             children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 18.0),),
               Text(
                 title,
                 style: darkTodoTitle,
-              )
+              ),
+              // Text(
+              //   note,
+              //   style: darkTodoTitle,
+              // )
             ],
           )
         ],
