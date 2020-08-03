@@ -13,7 +13,7 @@ TextStyle darkTodoTitle = new TextStyle(
     fontFamily: 'Avenir',
     fontWeight: FontWeight.bold,
     color: darkGrey,
-    fontSize: 30);
+    fontSize: 27.5);
 
 TextStyle blueTodoTitle = new TextStyle(
     fontFamily: 'Avenir',
@@ -35,17 +35,41 @@ TextStyle whiteText = new TextStyle(
     letterSpacing: 2,
     fontSize: 15);
 
+TextStyle whiteNoteText = new TextStyle(
+    fontFamily: 'Avenir',
+    // fontWeight: FontWeight.bold,
+    color: Colors.white,
+    letterSpacing: 2,
+    fontSize: 15);
+
 TextStyle darkButText = new TextStyle(
     fontFamily: 'Avenir',
     fontWeight: FontWeight.bold,
     color: darkGrey,
     fontSize: 15);
+TextStyle blueButText = new TextStyle(
+    fontFamily: 'Avenir',
+    fontWeight: FontWeight.bold,
+    color: blue,
+    fontSize: 15);
+
+TextStyle darkNoteText = new TextStyle(
+    fontFamily: 'Avenir',
+    // fontWeight: FontWeight.bold,
+    color: darkGrey,
+    fontSize: 20);
+
+    TextStyle darkText = new TextStyle(
+    fontFamily: 'Avenir',
+    fontWeight: FontWeight.bold,
+    color: darkGrey,
+    fontSize: 20);
 
 TextStyle welcomeTitle = new TextStyle(
     fontFamily: 'Avenir',
     fontWeight: FontWeight.bold,
     color: blue,
-    fontSize: 50);
+    fontSize: 40);
 
 TextStyle welcomeSubTitle = new TextStyle(
   fontFamily: 'Avenir',
@@ -61,4 +85,12 @@ TextStyle logTitle = new TextStyle(
   color: Colors.lightBlueAccent,
   letterSpacing: 1,
   fontSize: 38,
+);
+
+TextStyle signTitle = new TextStyle(
+  fontFamily: 'Avenir',
+  fontWeight: FontWeight.bold,
+  color: darkGrey,
+  letterSpacing: 1,
+  fontSize: 25,
 );

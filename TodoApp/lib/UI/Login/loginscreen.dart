@@ -1,8 +1,6 @@
 import 'package:TodoApp/bloc/blocs/user_bloc_provider.dart';
-import 'package:TodoApp/models/classes/user.dart';
 import 'package:TodoApp/models/global.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   // final VoidCallback signupPressed;
@@ -21,13 +19,13 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController lastNameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+    print("\n\n\n\n\n" + widget.newUser.toString());
     return Scaffold(
       backgroundColor: darkGrey,
       body: Center(
-        child: widget.newUser ? getSignUpPage() : getSignInPage(),
+        child: getSignInPage(),
       ),
     );
   }
@@ -35,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget getSignInPage() {
     TextEditingController emailText = new TextEditingController();
     TextEditingController passwordText = new TextEditingController();
+    print("\n\n\n\n\n\n hello");
     return Container(
       margin: EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 80),
       padding: EdgeInsets.all(30),
@@ -48,11 +47,11 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text(
-                  "Welcome",
+                  "Sticky Notes",
                   style: welcomeTitle,
                 ),
                 Text(
-                  "Keep track of your work!",
+                  "Post your thoughts and notes here...!",
                   style: welcomeSubTitle,
                   textAlign: TextAlign.center,
                 ),
@@ -134,76 +133,229 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          // Container(
-          //   // color: blue,
-          //   child: Column(
-          //     children: <Widget>[
-          //       Text("Don't have an account?",
-          //           style: TextStyle(
-          //               color: Colors.lightBlueAccent[200], fontSize: 12)),
-          //       // Text("Create an account?", style: TextStyle(color: blue, fontSize: 15)),
-          //       FlatButton(
-          //         child: Text('Create account', style: blueText),
-          //         onPressed: () {
-          //           // widget.newUser = false;
-          //         },
-          //       )
-          //     ],
-          //   ),
-          // )
+          Container(
+            // color: blue,
+            child: Column(
+              children: <Widget>[
+                Text("Don't have an account?",
+                    style: TextStyle(
+                        color: Colors.lightBlueAccent[200], fontSize: 12)),
+                // Text("Create an account?", style: TextStyle(color: blue, fontSize: 15)),
+                FlatButton(
+                  child: Text('Create account', style: blueText),
+                  onPressed: () {
+                    showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.transparent,
+                        // title: new Text("Add new Task",style: darkTodoTitle,),
+                        content: Container(
+                          padding: EdgeInsets.only(top: 20, bottom: 20, right: 10),
+                          // width: 550,
+                          constraints: BoxConstraints.expand(width: 450),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              color: blue),
+                            child: Container(
+                            padding: EdgeInsets.all(40),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Padding(padding: EdgeInsets.only(bottom: 10)),
+                                      Text(
+                                        "Sticky Notes",
+                                        style: signTitle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        "Post your thoughts here...!",
+                                        style: darkText,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+
+
+                                Column(
+                                  children: <Widget>[
+                                    TextField(
+                                      autofocus: false,
+                                      decoration: InputDecoration(
+                                        hintText: "Email Id",
+                                        contentPadding:
+                                            EdgeInsets.only(left: 5),
+                                            ),
+                                      controller: emailController,
+                                      // decoration: InputDecoration(hintText: "Email"),
+                                    ),
+                                    TextField(
+                                      autofocus: false,
+                                      decoration: InputDecoration(
+                                        hintText: "Username",
+                                        contentPadding:
+                                            EdgeInsets.only(left: 5),
+                                            ),
+                                      controller: userNameController,
+                                      // decoration: InputDecoration(hintText: "Username"),
+                                    ),
+                                    TextField(
+                                      autofocus: false,
+                                      decoration: InputDecoration(
+                                        hintText: "First name",
+                                        contentPadding:
+                                            EdgeInsets.only(left: 5),
+                                            ),
+                                      controller: firstNameController,
+                                      // decoration: InputDecoration(hintText: "First name"),
+                                    ),
+                                    TextField(
+                                      autofocus: false,
+                                      decoration: InputDecoration(
+                                        hintText: "Last name",
+                                        contentPadding:
+                                            EdgeInsets.only(left: 5),
+                                            ),
+                                      controller: lastNameController,
+                                      // decoration: InputDecoration(hintText: "Last name"),
+                                    ),
+                                    TextField(
+                                      autofocus: false,
+                                      decoration: InputDecoration(
+                                        hintText: "Password",
+                                        contentPadding:
+                                            EdgeInsets.only(left: 5),
+                                            ),
+                                      controller: passwordController,
+                                      // decoration: InputDecoration(hintText: "Password"),
+                                    ),
+                                  ],
+                                ),
+                                
+                                
+                                Column(
+                                  children: <Widget>[
+                                    FlatButton(
+                                        color: darkGrey,
+                                        child: Text('Sign up',style: whiteText,),
+                                        onPressed: () {
+                                          if (userNameController.text != null ||
+                                              firstNameController.text != null ||
+                                              lastNameController.text != null ||
+                                              emailController.text != null ||
+                                              passwordController.text != null) {
+                                            userBloc
+                                                .registerUser(
+                                                    userNameController.text,
+                                                    firstNameController.text ?? "",
+                                                    lastNameController.text,
+                                                    emailController.text,
+                                                    passwordController.text)
+                                                .then((_) {
+                                              widget.login();
+                                            });
+                                          }
+                                        }),
+                                    FlatButton(
+                                        color: darkGrey,
+                                        child: Text('Back to login',style: whiteText,),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        })
+                                  ],
+                                ),
+                                
+                              ],
+                            ),
+                          )
+                        ),
+                      );
+                    }
+                  );
+                  },
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
   }
 
-  Widget getSignUpPage() {
-    return Container(
-      padding: EdgeInsets.all(40),
-      child: Column(
-        children: <Widget>[
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(hintText: "Email"),
-          ),
-          TextField(
-            controller: userNameController,
-            decoration: InputDecoration(hintText: "Username"),
-          ),
-          TextField(
-            controller: firstNameController,
-            decoration: InputDecoration(hintText: "First name"),
-          ),
-          TextField(
-            controller: lastNameController,
-            decoration: InputDecoration(hintText: "Last name"),
-          ),
-          TextField(
-            controller: passwordController,
-            decoration: InputDecoration(hintText: "Password"),
-          ),
-          FlatButton(
-              color: Colors.blueAccent,
-              child: Text('Sign up'),
-              onPressed: () {
-                if (userNameController.text != null ||
-                    firstNameController.text != null ||
-                    lastNameController.text != null ||
-                    emailController.text != null ||
-                    passwordController.text != null) {
-                  userBloc
-                      .registerUser(
-                          userNameController.text,
-                          firstNameController.text ?? "",
-                          lastNameController.text,
-                          emailController.text,
-                          passwordController.text)
-                      .then((_) {
-                    widget.login();
-                  });
-                }
-              })
-        ],
-      ),
-    );
-  }
+  // Widget getSignUpPage() {
+  //   return Container(
+  //     padding: EdgeInsets.all(40),
+  //     child: Column(
+  //       children: <Widget>[
+  //         TextField(
+  //           controller: emailController,
+  //           decoration: InputDecoration(hintText: "Email"),
+  //         ),
+  //         TextField(
+  //           controller: userNameController,
+  //           decoration: InputDecoration(hintText: "Username"),
+  //         ),
+  //         TextField(
+  //           controller: firstNameController,
+  //           decoration: InputDecoration(hintText: "First name"),
+  //         ),
+  //         TextField(
+  //           controller: lastNameController,
+  //           decoration: InputDecoration(hintText: "Last name"),
+  //         ),
+  //         TextField(
+  //           controller: passwordController,
+  //           decoration: InputDecoration(hintText: "Password"),
+  //         ),
+  //         FlatButton(
+  //             color: Colors.blueAccent,
+  //             child: Text('Sign up'),
+  //             onPressed: () {
+  //               if (userNameController.text != null ||
+  //                   firstNameController.text != null ||
+  //                   lastNameController.text != null ||
+  //                   emailController.text != null ||
+  //                   passwordController.text != null) {
+  //                 userBloc
+  //                     .registerUser(
+  //                         userNameController.text,
+  //                         firstNameController.text ?? "",
+  //                         lastNameController.text,
+  //                         emailController.text,
+  //                         passwordController.text)
+  //                     .then((_) {
+  //                   widget.login();
+  //                 });
+  //               }
+  //             }),
+  //         Container(
+  //           // color: blue,
+  //           child: Column(
+  //             children: <Widget>[
+  //               Text("Already have an account?",
+  //                   style: TextStyle(
+  //                       color: Colors.lightBlueAccent[200], fontSize: 12)),
+  //               // Text("Create an account?", style: TextStyle(color: blue, fontSize: 15)),
+  //               FlatButton(
+  //                 child: Text('Log in here.!', style: blueText),
+  //                 onPressed: () {
+  //                   return Scaffold(
+  //                       body: Container(
+  //                       child: getSignInPage(),
+  //                     ),
+  //                   );
+  //                   // widget.newUser = false;
+  //                 },
+  //               )
+  //             ],
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

@@ -8,8 +8,6 @@ import '../../models/classes/user.dart';
 class ApiProvider {
   Client client = Client();
 
-  final _apikey = 'ur_apikey';
-
   Future signinUser(String emailadress, String password, String apiKey) async {
     final response =
         await client.post("https://todoapp-flt.herokuapp.com/api/signin",
@@ -74,7 +72,7 @@ class ApiProvider {
       }
       return tasks;
     } else {
-      throw Exception('Failed to load tasks');
+      // throw Exception('Failed to load tasks');
     }
   }
 

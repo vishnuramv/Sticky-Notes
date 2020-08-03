@@ -3,7 +3,6 @@ import 'package:TodoApp/UI/Login/loginscreen.dart';
 import 'package:TodoApp/bloc/resources/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import './models/global.dart';
 import './UI/Intray/intray_page.dart';
 import './models/classes/user.dart';
@@ -36,12 +35,17 @@ class MyHomePage extends StatefulWidget {
   // final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   String apiKey = "";
   TaskBloc taskBloc;
+
+  String fname;
+  MyHomePageState({this.fname});
+
+  User users;
 
   Repository _repository = Repository();
 
@@ -56,12 +60,15 @@ class _MyHomePageState extends State<MyHomePage> {
           taskBloc = TaskBloc(apiKey);
           print('api key:' + apiKey);
           print('data');
+          // print(users.firstname);
         } else {
           print('no data');
         }
         return apiKey.length > 0
             ? getHomePage()
-            : LoginPage(
+            :
+            //  firstPage();
+            LoginPage(
                 login: login,
                 // signinPressed: signinPressed,
                 newUser: false,
@@ -84,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
   // }
 
   Future signinUser() async {
-    String email = "";
     apiKey = await getApiKey();
     if (apiKey != null) {
       if (apiKey.length > 0) {
@@ -101,6 +107,113 @@ class _MyHomePageState extends State<MyHomePage> {
   Future getApiKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString('API_Token');
+  }
+
+  void signIn() {
+    LoginPage(
+      login: login,
+      newUser: false,
+    );
+  }
+
+  void signUp() {
+    LoginPage(
+      login: login,
+      newUser: true,
+    );
+  }
+
+  Widget firstPage() {
+    return Container(
+      margin: EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 80),
+      padding: EdgeInsets.all(30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            // color: blue,
+            height: 150,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  "Sticky Notes",
+                  style: welcomeTitle,
+                ),
+                Text(
+                  "Stick your thoughts here....!",
+                  style: welcomeSubTitle,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 300,
+            // color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                RaisedButton(
+                  color: darkGrey,
+                  padding:
+                      EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                  child: Text(
+                    'Sign in',
+                    style: blueTodoTitle,
+                  ),
+                  onPressed: signIn,
+                  //  () {
+                  //   // loginOrup = false;
+                  //   LoginPage(
+                  //     login: login,
+                  //     newUser: false,
+                  //   );
+                  // }
+                ),
+                Text("Or",
+                    style: TextStyle(
+                        color: Colors.lightBlueAccent[200], fontSize: 12)),
+                RaisedButton(
+                  color: darkGrey,
+                  padding:
+                      EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                  child: Text(
+                    'Sign Up',
+                    style: blueTodoTitle,
+                  ),
+                  onPressed: signUp,
+                  // () {
+                  //   // loginOrup = true;
+                  //   LoginPage(
+                  //     login: login,
+                  //     newUser: true,
+                  //   );
+                  // }
+                ),
+              ],
+            ),
+          ),
+          // Container(
+          //   // color: blue,
+          //   child: Column(
+          //     children: <Widget>[
+          //       Text("Don't have an account?",
+          //           style: TextStyle(
+          //               color: Colors.lightBlueAccent[200], fontSize: 12)),
+          //       // Text("Create an account?", style: TextStyle(color: blue, fontSize: 15)),
+          //       FlatButton(
+          //         child: Text('Create account', style: blueText),
+          //         onPressed: () {
+          //           // widget.newUser = false;
+          //         },
+          //       )
+          //     ],
+          //   ),
+          // )
+        ],
+      ),
+    );
   }
 
   Widget getHomePage() {
@@ -121,23 +234,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   //   color: Colors.orange,
                   // ),
                   new Container(
-                    child: Center(
-                      // child: FlatButton(
-                      //   color: Colors.blueAccent,
-                      //   child: Text("Log out"),
-                      //   onPressed: () {
-                      //     logout();
-                      //   },
-                      // ),
-                      child: IconButton(
-                          icon: Icon(Icons.power_settings_new),
-                          iconSize: 250,
-                          onPressed: () {
-                            logout();
-                          }),
-                    ),
-                    color: blue
-                  ),
+                      child: Center(
+                        // child: FlatButton(
+                        //   color: Colors.blueAccent,
+                        //   child: Text("Log out"),
+                        //   onPressed: () {
+                        //     logout();
+                        //   },
+                        // ),
+                        child: IconButton(
+                            icon: Icon(Icons.power_settings_new),
+                            iconSize: 250,
+                            onPressed: () {
+                              logout();
+                            }),
+                      ),
+                      color: blue),
                 ],
               ),
               Container(
@@ -154,11 +266,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        'Intray',
+                        'Sricky Notes',
                         style: intrayTitle,
                         textAlign: TextAlign.center,
                       ),
-                      Container()
+                      // Container()
                     ]),
               ),
               Container(
@@ -182,14 +294,19 @@ class _MyHomePageState extends State<MyHomePage> {
               title: new TabBar(
                 tabs: [
                   Tab(
-                    icon: Icon(Icons.home,
-                    size: 35,),
+                    icon: Icon(
+                      Icons.home,
+                      size: 35,
+                    ),
                   ),
                   // Tab(
                   //   icon: new Icon(Icons.rss_feed),
                   // ),
                   Tab(
-                    icon: new Icon(Icons.power_settings_new,size: 35,),
+                    icon: new Icon(
+                      Icons.power_settings_new,
+                      size: 35,
+                    ),
                   ),
                 ],
                 labelColor: blue,
@@ -198,7 +315,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 indicatorPadding: EdgeInsets.all(5.0),
                 labelPadding: EdgeInsets.all(1),
                 // indicatorColor: Colors.transparent,
-                
               ),
               // backgroundColor: darkGrey,
               backgroundColor: Colors.white,

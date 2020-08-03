@@ -16,6 +16,7 @@ class _IntrayPageState extends State<IntrayPage> {
   List<Task> taskList = [];
 
   TaskBloc tasksBloc;
+  
 
   @override
   void initState() {
@@ -42,13 +43,34 @@ class _IntrayPageState extends State<IntrayPage> {
                 return _buildReorderableListSimple(context, snapshot.data);
               } else if (snapshot.data.length == 0) {
                 return Center(
-                  child: Text(
-                    "No Task",
-                    style: TextStyle(
-                        fontFamily: 'Avenir',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 30),
+                  child: Container(
+                    height: 300,
+                    // color: blue,
+                    padding: EdgeInsets.only(left: 25,right: 25,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.all(40)),
+                        Text(
+                          "No Task",
+                          style: TextStyle(
+                              fontFamily: 'Avenir',
+                              fontWeight: FontWeight.bold,
+                              color:blue,
+                              fontSize: 30),
+                        ),
+                        Text(
+                          "If you have added any task, try refreshing by swiping to right and back to left...!",
+                          style: TextStyle(
+                              fontFamily: 'Avenir',
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 25),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   ),
                 );
               } else if (snapshot.hasError) {
@@ -65,7 +87,7 @@ class _IntrayPageState extends State<IntrayPage> {
       key: Key(item.taskId.toString()),
       title: IntrayTodo(
         title: item.title,
-        // note: item.note
+        note: item.note
       ),
     );
   }
