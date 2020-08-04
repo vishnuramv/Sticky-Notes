@@ -337,7 +337,7 @@ class MyHomePageState extends State<MyHomePage> {
             // title: new Text("Add new Task",style: darkTodoTitle,),
             content: Container(
               padding: EdgeInsets.all(20),
-              constraints: BoxConstraints.expand(height: 350, width: 150),
+              constraints: BoxConstraints.expand(height: 500 , width: 350),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   color: blue),

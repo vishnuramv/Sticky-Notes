@@ -2,4 +2,5 @@
 Todo_Backend/my-env/
 Todo_Backend/config.py
 Todo_Backend/__pycache__/
+TodoApp/lib/bloc/resources/api.dart
 *.pyc
